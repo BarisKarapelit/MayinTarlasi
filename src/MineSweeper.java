@@ -1,9 +1,11 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class MineSweeper {
 
     private static int rowNumber;
     private static int columnNumber;
+
     public MineSweeper(int rowNumber, int columnNumber) {
         setRowNumber(rowNumber);
         setColumnNumber(columnNumber);
@@ -11,14 +13,20 @@ public class MineSweeper {
 
     public void run() {
         DynamicCentering dynamicCentering = new DynamicCentering();
-        dynamicCentering.setCenteringPage("Welcome to Mine Sweeper!");
         Boolean isPlay = true, gameStatus = true;
+        String mineSweeperPage = "", userRow, userColumn;
         Scanner scanner = new Scanner(System.in);
         do {
-            dynamicCentering.setCenteringPage("Enter the number of rows: ");
-            dynamicCentering.setCenteringPage("Enter the number of columns: ");
-            dynamicCentering.setCenteringPage("====================================");
-            int a= scanner.nextInt();
+            cleanPage();
+
+            dynamicCentering.setCenteringPage("==================================================");
+            mineSweeperPage = print(mineSweeperPage, dynamicCentering);
+            System.out.print("Enter the number of Row: ");
+            userRow = scanner.nextLine();
+            System.out.print("Enter the number of Column: ");
+            userColumn = scanner.nextLine();
+
+            int a = scanner.nextInt();
             if (a == 1) {
                 gameStatus = true;
             } else {
@@ -44,9 +52,35 @@ public class MineSweeper {
                     isPlay = false;
                 }
             }
-        }while (isPlay);
+        } while (isPlay);
 
     }
+    private static void cleanPage() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
+    }
+    private static String print(String mineSweeperPage, DynamicCentering dynamicCentering) {
+        Random random = new Random();
+        int randomBoom;
+        int map[][] = new int[getRowNumber()][getColumnNumber()];
+        for (int i = 0; i < getRowNumber(); i++) {
+            randomBoom = random.nextInt((getColumnNumber() - 0) + 1) + 0;
+            System.out.println();
+            for (int j = 0; j < getColumnNumber(); j++) {
+                if (j == randomBoom) {
+                    map[i][j] = 1;
+                    mineSweeperPage += " * ";
+                } else
+                    map [i][j] = 0;
+                    mineSweeperPage += " - ";
+            }
+            dynamicCentering.setCenteringPage(mineSweeperPage);
+            mineSweeperPage = "";
+        }
+        return mineSweeperPage;
+    }
+
 
     public static void setColumnNumber(int columnNumber) {
         MineSweeper.columnNumber = columnNumber;
