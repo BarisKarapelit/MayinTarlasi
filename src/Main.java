@@ -5,6 +5,7 @@ public class Main {
         DynamicCentering dynamicCentering = new DynamicCentering();
         Scanner scanner = new Scanner(System.in);
         dynamicCentering.setCenteringPage("Welcome to Mine Sweeper!");
+        System.out.println("Please enter the number of rows and columns you want to play.");
         System.out.print("Enter the number of rows: ");
         int rowNumber = scanner.nextInt();
         System.out.print("Enter the number of columns: ");
