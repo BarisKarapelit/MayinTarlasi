@@ -12,9 +12,10 @@ public class MineSweeper {
     static int numRows, size, userRowInt = 0, userColumnInt = 0; // number of rows
     static Random random = new Random(); // random number generator
     static Integer[] mineLocation; // location of mine
+    static Boolean startPage;
 
     // Constructor
-    public MineSweeper(int rowNumber, int columnNumber) {
+    public MineSweeper(int rowNumber, int columnNumber, Boolean startPage) {
         setRowNumber(rowNumber);
         setColumnNumber(columnNumber);
         this.numRows = getRowNumber();
@@ -22,56 +23,65 @@ public class MineSweeper {
         this.map = new Integer[numRows][numCols];
         this.board = new Integer[numRows][numCols];
         this.size = numRows * numCols;
+        this.startPage = startPage;
     }
 
 
     // Main method
     public void run() {
         DynamicCentering dynamicCentering = new DynamicCentering();
-        Boolean isPlay = true, isSuccessful = true;
-        int success = 0, userRowInt = 0, userColumnInt = 0;
+        Boolean isPlay = true, isSuccessfulRow = true, isSuccessfulColumn = true;
+        int success = 0;
         String mineSweeperPage = "";
         Scanner scanner = new Scanner(System.in);
-        prepareGame();
         randomNumberGenerater();
-
+        mineSweeperPage = print(dynamicCentering, mineLocation);
         do {
-            mineSweeperPage = print(mineSweeperPage, dynamicCentering, mineLocation);
-            userPanel(dynamicCentering, mineSweeperPage);
+            isSuccessfulColumn = true;
+            isSuccessfulRow = true;
+            if (startPage == true) {
+                userPanelAnswer(dynamicCentering, mineSweeperPage);
+                startPage = false;
+            }
 
             // Input validation for row number
-            while (isSuccessful) {
+            while (Boolean.TRUE.equals(isSuccessfulRow)) {
+                System.out.println("\nPlease enter the number of rows and columns you want to play.\n");
                 System.out.print("Enter the number of Row: ");
                 userRowInt = scanner.nextInt();
                 if (userRowInt >= 0 || userRowInt <= map.length) {
-                    isSuccessful = false;
+                    isSuccessfulRow = false;
                 } else {
-                    isSuccessful = true;
+                    isSuccessfulRow = true;
                 }
             }
 
-            isSuccessful = true;
-            while (isSuccessful) {
+            // Input validation for column number
+            while (Boolean.TRUE.equals(isSuccessfulColumn)) {
                 System.out.print("Enter the number of Column: ");
+
                 userColumnInt = scanner.nextInt();
                 if (userColumnInt >= 0 || userColumnInt <= map.length) {
-                    isSuccessful = false;
+                    isSuccessfulColumn = false;
                 } else {
-                    isSuccessful = true;
+                    isSuccessfulColumn = true;
                 }
             }
+
+
             if (map[userRowInt][userColumnInt] == -1) {
                 isPlay = getaBoolean(scanner, dynamicCentering, false);
             } else {
                 int count = findNeighbors(userRowInt, userColumnInt);
                 board[userRowInt][userColumnInt] = count;
-                mineSweeperPage = userPanel(dynamicCentering, mineSweeperPage, count);
+                mineSweeperPage = userPanel(dynamicCentering, count);
                 success++;
                 if (success == (size - (size / 4))) {
                     isPlay = getaBoolean(scanner, dynamicCentering, true);
                 }
             }
-        } while (isPlay);
+
+        } while (Boolean.TRUE.equals(isPlay));
     }
 
     private static int findNeighbors(int row, int col) {
@@ -93,7 +103,7 @@ public class MineSweeper {
         return count;
     }
 
-    private static String userPanel(DynamicCentering dynamicCentering, String mineSweeperPage) {
+    private static String userPanelAnswer(DynamicCentering dynamicCentering, String mineSweeperPage) {
         System.out.println();
         dynamicCentering.setCenteringPage("==================================================");
         System.out.println();
@@ -115,8 +125,9 @@ public class MineSweeper {
         return mineSweeperPage;
     }
 
-    private static String userPanel(DynamicCentering dynamicCentering, String mineSweeperPage, int count) {
-        System.out.println("Board:");
+    private static String userPanel(DynamicCentering dynamicCentering, int count) {
+        String mineSweeperPage = "";
+        startPage = false;
         System.out.println();
         dynamicCentering.setCenteringPage("==================================================");
         System.out.println();
@@ -124,8 +135,10 @@ public class MineSweeper {
             System.out.println();
             for (int j = 0; j < numCols; j++) {
                 if (board[i][j] == board[userRowInt][userColumnInt]) {
-                    mineSweeperPage += board[userRowInt][userColumnInt]+" ";
-                } else {
+                    mineSweeperPage += count;
+                } else if (board[i][j] == 0) {
+                    mineSweeperPage += " - ";
+                } else if (board[i][j] == -1) {
                     mineSweeperPage += " - ";
                 }
             }
@@ -134,7 +147,6 @@ public class MineSweeper {
         }
         System.out.println();
         dynamicCentering.setCenteringPage("==================================================");
-        System.out.println("\nPlease enter the number of rows and columns you want to play.\n");
         return mineSweeperPage;
     }
 
@@ -196,7 +208,8 @@ public class MineSweeper {
         return isPlay;
     }
 
-    private static String print(String mineSweeperPage, DynamicCentering dynamicCentering, Integer[] randomBoom) {
+    private static String print(DynamicCentering dynamicCentering, Integer[] randomBoom) {
+        String mineSweeperPage = "";
         for (int i = 0; i < numRows; i++) {
             System.out.println();
             for (int j = 0; j < numCols; j++) {
@@ -219,52 +232,11 @@ public class MineSweeper {
             }
             dynamicCentering.setCenteringPage(mineSweeperPage);
             mineSweeperPage = "";
-        }
 
+
+        }
         board = Arrays.copyOf(map, map.length);
         return mineSweeperPage;
-    }
-
-    public void prepareGame() {
-        // Initialize map and board arrays with appropriate dimensions
-        map = new Integer[numRows][numCols];
-        board = new Integer[numRows][numCols];
-
-        // Initialize map elements
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                map[i][j] = 0;  // Initialize to 0 (empty)
-                board[i][j] = 0;  // Initialize to 0 (not opened)
-            }
-        }
-
-        int randRow, randCol, count = 0;
-        while (count != (rowNumber * columnNumber) / 4) {
-            randRow = (int) (Math.random() * rowNumber);
-            randCol = (int) (Math.random() * columnNumber);
-            if (map[randRow][randCol] != -1) {
-                map[randRow][randCol] = -1;
-                count++;
-            }
-        }
-    }
-
-
-    public void printMap(Integer[][] map) {
-        System.out.println("Map:");
-        for (int i = 0; i < map.length; i++) {
-            System.out.println();
-            for (int j = 0; j < map[0].length; j++) {
-                if (map[i][j] == -1) {
-                    System.out.print(" * ");
-                } else if (map[i][j] == 0) {
-                    System.out.print(" - ");
-                } else {
-                    System.out.print(" " + map[i][j] + " ");
-                }
-            }
-        }
-        System.out.println();
     }
 
     public static void setColumnNumber(int columnNumber) {

@@ -29,7 +29,7 @@ public class Main {
         }
 
         System.out.println("\n Starting game...\n");
-        MineSweeper mineSweeper = new MineSweeper(rowNumber, columnNumber);
+        MineSweeper mineSweeper = new MineSweeper(rowNumber, columnNumber,true);
         dynamicCentering.setCenteringPage("==================================================");
         mineSweeper.run();
 
