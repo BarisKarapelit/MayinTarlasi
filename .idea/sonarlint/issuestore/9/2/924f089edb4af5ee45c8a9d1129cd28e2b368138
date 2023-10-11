@@ -1,0 +1,17 @@
+
+R
+java:S2440"0Remove this instantiation of "DynamicCentering".(×‹¶Šÿÿÿÿÿ8ƒÔë±1
+G	java:S106
+"+Replace this use of System.out by a logger.(¦¯Å¢8œÔë±1
+W
+java:S2209"5Change this instance-reference to a static reference.(ÁÀ½¶øÿÿÿÿ8Ôë±1
+L	java:S106"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ8Ôë±1
+L	java:S106"+Replace this use of System.out by a logger.(‡ÓŞ®ûÿÿÿÿ8ŸÔë±1
+L	java:S106"+Replace this use of System.out by a logger.(İö¿·úÿÿÿÿ8 Ôë±1
+G	java:S106"+Replace this use of System.out by a logger.(Êğü8¢Ôë±1
+L	java:S106"+Replace this use of System.out by a logger.(ª¼ÔÃÿÿÿÿÿ8¤Ôë±1
+L	java:S106"+Replace this use of System.out by a logger.(İö¿·úÿÿÿÿ8¥Ôë±1
+G	java:S106"+Replace this use of System.out by a logger.(Êğü8§Ôë±1
+L	java:S106"+Replace this use of System.out by a logger.(¸õ¥áøÿÿÿÿ8¨Ôë±1
+R
+java:S2209!"5Change this instance-reference to a static reference.(×Ë¹ğ8¬Ôë±1
